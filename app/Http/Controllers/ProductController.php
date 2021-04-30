@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Variant;
+use App\Models\ProductImage;
+use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantPrice;
-use App\Models\Variant;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -17,7 +18,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products.index');
+        $products = Product;;with('variants')->get();
+        return view('products.index',compact('products'));
     }
 
     /**
@@ -40,12 +42,40 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $product = new Product;
-        //id,title,sku
         $product->title = $request->title;
         $product->sku = $request->sku;
         $product->description = $request->description;
 
+
+
+        $productImage = new ProductImage;
+
+        if($request->hasfile('file_path')){
+            $project_name = $request->file('file_path')->getClientOrginalName();
+            $size = $request->file('file_path')->getSize();
+            $extension = $request->file('file_path')->getClientOrginalExtension();
+            $name = $product->title.'.'.$extension;
+            $path = $request->file('file_path')->storeAs('public/uploads',$name);
+        }
+
+        $productImage->file_path = $name;
+
+        $variant = new Variant;
+
+        $variant->variant = $request->varient;
+
+        $productvariantprice = new ProductVariantPrice;
+        $productvariantprice->stock = $request->stock;
+        $productvariantprice->price = $request->price;
+        $product->productvariantprize()->save($productvariantprice);
+
+        $product->variants()->attach($variant);
+
+
         $product->save();
+        $product->productimages()->save( $productImage->file_path );
+
+
 
 
 
