@@ -8,7 +8,7 @@ use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantPrice;
-
+use Carbon\Carbon;
 class ProductController extends Controller
 {
     /**
@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product;;with('variants')->get();
+        $products = Product::with('variants')->get();
         return view('products.index',compact('products'));
     }
 

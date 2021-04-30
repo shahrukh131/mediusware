@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductVariantPrice extends Model
 {
     protected $table ='product_variant_prices';
+    protected $fillable =['stock','price'];
 
     public function product()
     {

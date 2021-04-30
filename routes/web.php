@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Product;
+use App\Models\Variant;
+use App\Models\ProductVariantPrice;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,3 +30,4 @@ Route::middleware('auth')->group(function () {
     Route::resource('blog', 'BlogController');
     Route::resource('blog-category', 'BlogCategoryController');
 });
+
