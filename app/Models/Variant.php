@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 
 class Variant extends Model
@@ -9,5 +10,9 @@ class Variant extends Model
     protected $fillable = [
         'title', 'description'
     ];
+
+    public function products(){
+        return $this->belongsToMany(Product::class);
+    }
 
 }
